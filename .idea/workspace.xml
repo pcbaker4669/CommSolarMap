@@ -4,15 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="26ec0bed-c430-4bb9-a0d4-43eb21982026" name="Changes" comment="" />
+    <list default="true" id="26ec0bed-c430-4bb9-a0d4-43eb21982026" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.cpg" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.cpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.dbf" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.dbf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.prj" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.prj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.shp" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.shp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.shp.ea.iso.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.shp.ea.iso.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.shp.iso.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.shp.iso.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.shx" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.shx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/app.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2iy9Nj529VjC3KEbqlA08uMmWYz" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -23,7 +42,10 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/pcbak/OneDrive/Documents/GMU/PowerModels/code/Solor_with_map/PowerData"
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/pcbak/OneDrive/Documents/GMU/PowerModels/code/CommSolarMapStreamlit"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -35,7 +57,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Solor_with_map" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -48,7 +70,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\pcbak\OneDrive\Documents\GMU\PowerModels\code\CommSolarMapStreamlit\app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
