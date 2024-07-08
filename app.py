@@ -67,11 +67,11 @@ def redraw_plot(year):
     color_map = [mapper.to_rgba(i) for i in cap_arr]
     points = ax.scatter(lngs_arr, lats_arr, c=color_map)
 
-    tx_str = f"Year: {year}\nLocs #: {len(lngs_arr)}\nTot Cap(MW-AC): {tot_cap:.1f}"
-    ax.text(-127, 25, tx_str, fontsize=18, color='green', weight='bold')
+    tx_str = f"Year: {year}\nLocations: {len(lngs_arr)}\nTotal MW-AC: {tot_cap:.1f}"
+    ax.text(-127, 25, tx_str, fontsize=17, color='green', weight='bold')
     # Add color bar
     cbar = plt.colorbar(mapper, ax=ax, orientation='vertical', fraction=0.036, pad=0.04)
-    cbar.set_label('Log Capacity (kW-AC)', fontsize=12)
+    cbar.set_label('Log(Capacity) kW-AC', fontsize=12)
 
     # Add mplcursors hover functionality
     cursor = mplcursors.cursor(points, hover=True)
@@ -84,7 +84,7 @@ def redraw_plot(year):
 
 # Streamlit app setup
 st.title("Community Solar 2006-2024 in Contiguous States")
-year_slider = st.slider("Select Year", 2006, 2024, 2006)
+year_slider = st.slider("Select Year", 2006, 2024, 2024)
 
 # Initialize data for the selected year
 lats_arr.clear()

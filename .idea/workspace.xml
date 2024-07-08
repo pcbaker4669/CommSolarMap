@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26ec0bed-c430-4bb9-a0d4-43eb21982026" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.cpg" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.cpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.dbf" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.dbf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.prj" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.prj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.shp" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.shp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.shp.ea.iso.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.shp.ea.iso.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.shp.iso.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.shp.iso.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cb_2018_us_state_500k/cb_2018_us_state_500k.shx" beforeDir="false" afterPath="$PROJECT_DIR$/data/cb_2018_us_state_500k.shx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
