@@ -4,6 +4,8 @@ import matplotlib as mpl
 import geopandas as gpd
 import streamlit as st
 import mplcursors
+import pandas as pd
+import gc
 
 # Import your custom modules
 import load_data as ld
@@ -15,10 +17,12 @@ set_gdal_config_options({
     'SHAPE_RESTORE_SHX': 'YES',
 })
 
-# Load the shapefile
-states = gpd.read_file('data/cb_2018_us_state_500k.shp')
-states = states.to_crs("EPSG:4326")
+@st.cache_data
+def load_shapefile():
+    states = gpd.read_file('data/cb_2018_us_state_500k.shp')
+    return states.to_crs("EPSG:4326")
 
+states = load_shapefile()
 # Filter out Hawaii and Alaska
 states = states[~states['STUSPS'].isin(['HI', 'AK'])]
 
@@ -26,22 +30,24 @@ states = states[~states['STUSPS'].isin(['HI', 'AK'])]
 norm = mpl.colors.Normalize(vmin=0, vmax=math.log10(2000000), clip=True)
 mapper = mpl.cm.ScalarMappable(norm=norm, cmap='coolwarm')
 
-# Load data
-df_arr = ld.load_data()
-plant_arr = pi.load_plant_array(df_arr)
-ll_df = ld.load_lat_lngs()
-plant_arr = pi.match_lat_lngs(plant_arr, ll_df)
+# Load data once and cache it
+@st.cache_data
+def load_data():
+    df_arr = ld.load_data()
+    plant_arr = pi.load_plant_array(df_arr)
+    ll_df = ld.load_lat_lngs()
+    return pi.match_lat_lngs(plant_arr, ll_df)
 
-# Initialize scatter plot data containers
-lats_arr = []
-lngs_arr = []
-cap_arr = []
-city_arr = []
-tot_cap = 0
+plant_arr = load_data()
 
 # Function to update the plot data for each year
 def update_plot_data(year):
-    global tot_cap
+    lats_arr = []
+    lngs_arr = []
+    cap_arr = []
+    city_arr = []
+    tot_cap = 0
+
     for obj in plant_arr:
         obj_year = obj.get_year()
         state = obj.get_state()
@@ -53,8 +59,11 @@ def update_plot_data(year):
             tot_cap += obj.get_capacity_mw()
             cap_arr.append(math.log10(obj.get_capacity_kw()))
 
+    return lats_arr, lngs_arr, cap_arr, city_arr, tot_cap
+
 # Function to redraw the plot
-def redraw_plot(year):
+# Function to redraw the plot
+def redraw_plot(year, lats_arr, lngs_arr, cap_arr, city_arr, tot_cap):
     fig, ax = plt.subplots(1, 1, figsize=(10, 6))
     states.boundary.plot(ax=ax, color='green', linewidth=1)
     ax.axis('off')
@@ -87,13 +96,17 @@ st.title("Community Solar 2006-2024 in Contiguous States")
 year_slider = st.slider("Select Year", 2006, 2024, 2024)
 
 # Initialize data for the selected year
-lats_arr.clear()
-lngs_arr.clear()
-cap_arr.clear()
-city_arr.clear()
-tot_cap = 0
+lats_arr, lngs_arr, cap_arr, city_arr, tot_cap = [], [], [], [], 0
 for y in range(2006, year_slider + 1):
-    update_plot_data(y)
+    lats, lngs, caps, cities, total_capacity = update_plot_data(y)
+    lats_arr.extend(lats)
+    lngs_arr.extend(lngs)
+    cap_arr.extend(caps)
+    city_arr.extend(cities)
+    tot_cap += total_capacity
 
 # Redraw the plot based on the selected year
-redraw_plot(year_slider)
+redraw_plot(year_slider, lats_arr, lngs_arr, cap_arr, city_arr, tot_cap)
+
+# Explicitly call garbage collection to free up memory
+gc.collect()

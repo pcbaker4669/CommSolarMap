@@ -1,9 +1,9 @@
 class PlantInfo:
-    def __init__(self, name, start_year, state, city, utility,
-                 capacity, dataset_year):
-        self.name = name
+    def __init__(self, start_year, state, city,
+                 capacity):
+
         self.start_year = start_year
-        self.dataset_year = dataset_year
+
         self.state = state
         self.city = city
         self.capacity = capacity
@@ -36,11 +36,11 @@ class PlantInfo:
         return self.capacity
 
     def __str__(self):
-        s = ("Name: {}, Year: {}, State: {}, City: {}, Capacity: {}, "
-             "DS Year: {}, Lat: {}, Lng: {}"
-             .format(self.name, self.start_year,
+        s = ("Year: {}, State: {}, City: {}, Capacity: {}, "
+             "Lat: {}, Lng: {}"
+             .format(self.start_year,
                      self.state, self.city, self.capacity,
-                     self.dataset_year, self.lat, self.lng))
+                     self.lat, self.lng))
         return s
 
 
@@ -48,7 +48,7 @@ def load_plant_array(df):
     output_arr = []
     cnt = 0
     added = 0
-    print("df size = ", len(df))
+
     for index, row in df.iterrows():
         name = row['Project Name']
         utility = row['Utility']
@@ -58,7 +58,7 @@ def load_plant_array(df):
         year = row['Year of Interconnection']
         dataset_year = row['Year']
 
-        data_obj = PlantInfo(name, year, s, c, utility, cap, dataset_year)
+        data_obj = PlantInfo(year, s, c, cap)
 
         output_arr.append(data_obj)
 
