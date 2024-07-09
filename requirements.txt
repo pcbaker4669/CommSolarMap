@@ -1,7 +1,5 @@
-streamlit
-matplotlib
-geopandas
-pyogrio
+streamlit~=1.36.0
+geopandas~=1.0.1
 mplcursors
-pandas
-
+pandas~=2.2.2
+plotly~=5.22.0
