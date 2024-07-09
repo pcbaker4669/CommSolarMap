@@ -1,11 +1,8 @@
 import math
-import matplotlib.pyplot as plt
-import matplotlib as mpl
+import pandas as pd
 import geopandas as gpd
 import streamlit as st
-import mplcursors
-import pandas as pd
-import gc
+import plotly.express as px
 
 # Import your custom modules
 import load_data as ld
@@ -17,18 +14,16 @@ set_gdal_config_options({
     'SHAPE_RESTORE_SHX': 'YES',
 })
 
+# Load the shapefile once and cache it
 @st.cache_data
 def load_shapefile():
     states = gpd.read_file('data/cb_2018_us_state_500k.shp')
     return states.to_crs("EPSG:4326")
 
 states = load_shapefile()
-# Filter out Hawaii and Alaska
-states = states[~states['STUSPS'].isin(['HI', 'AK'])]
 
-# Normalize and color map setup
-norm = mpl.colors.Normalize(vmin=0, vmax=math.log10(2000000), clip=True)
-mapper = mpl.cm.ScalarMappable(norm=norm, cmap='coolwarm')
+# Filter out Hawaii and Alaska
+# states = states[~states['STUSPS'].isin(['HI', 'AK'])]
 
 # Load data once and cache it
 @st.cache_data
@@ -51,7 +46,7 @@ def update_plot_data(year):
     for obj in plant_arr:
         obj_year = obj.get_year()
         state = obj.get_state()
-        if obj_year == year and not (state == 'AK' or state == 'HI'):
+        if obj_year == year: # and not (state == 'AK' or state == 'HI'):
             lats_arr.append(obj.get_lat())
             lngs_arr.append(obj.get_lng())
             s = "{}, {}, {:.3f}(MW-AC)".format(obj.get_city(), state, obj.get_capacity_mw())
@@ -61,52 +56,65 @@ def update_plot_data(year):
 
     return lats_arr, lngs_arr, cap_arr, city_arr, tot_cap
 
-# Function to redraw the plot
-# Function to redraw the plot
-def redraw_plot(year, lats_arr, lngs_arr, cap_arr, city_arr, tot_cap):
-    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-    states.boundary.plot(ax=ax, color='green', linewidth=1)
-    ax.axis('off')
-    ax.set_aspect('auto')
-    ax.set_xlim(-125, -65)
-    ax.set_ylim(24, 50)
-    tl_str = "Community Solar 2006-2024"
-    ax.set_title(tl_str, fontsize=18, color='green', weight='bold')
+# Function to create the plot
+def create_plot(year):
+    lats_arr, lngs_arr, cap_arr, city_arr, tot_cap = [], [], [], [], 0
+    for y in range(2006, year + 1):
+        lats, lngs, caps, cities, total_capacity = update_plot_data(y)
+        lats_arr.extend(lats)
+        lngs_arr.extend(lngs)
+        cap_arr.extend(caps)
+        city_arr.extend(cities)
+        tot_cap += total_capacity
 
-    color_map = [mapper.to_rgba(i) for i in cap_arr]
-    points = ax.scatter(lngs_arr, lats_arr, c=color_map)
+    # Create a DataFrame for Plotly
+    data = pd.DataFrame({
+        'Latitude': lats_arr,
+        'Longitude': lngs_arr,
+        'City_State': city_arr,
+        'Capacity_Log': cap_arr
+    })
 
-    tx_str = f"Year: {year}\nLocations: {len(lngs_arr)}\nTotal MW-AC: {tot_cap:.1f}"
-    ax.text(-127, 25, tx_str, fontsize=17, color='green', weight='bold')
-    # Add color bar
-    cbar = plt.colorbar(mapper, ax=ax, orientation='vertical', fraction=0.036, pad=0.04)
-    cbar.set_label('Log(Capacity) kW-AC', fontsize=12)
+    fig = px.scatter_geo(
+        data,
+        lat='Latitude',
+        lon='Longitude',
+        hover_name='City_State',
 
-    # Add mplcursors hover functionality
-    cursor = mplcursors.cursor(points, hover=True)
+        color='Capacity_Log',
+        color_continuous_scale='Viridis',
+        projection='albers usa',
+        title=f"Community Solar Progress {year}"
+    )
 
-    @cursor.connect("add")
-    def on_add(sel):
-        sel.annotation.set_text(city_arr[sel.index])
+    fig.update_geos(
+        visible=True,
+        resolution=110,
+        scope="usa",
+        showcountries=True,
+        countrycolor="Black",
+        showsubunits=True,
+        subunitcolor="Blue"
+    )
 
-    st.pyplot(fig)
+    fig.update_layout(
+        margin={"r":0,"t":30,"l":0,"b":0},
+        title_x=0.5,
+        coloraxis_colorbar={
+            'title': 'Log Capacity (kW-AC)',
+            'lenmode': 'fraction',
+            'len': 0.75,
+            'yanchor': 'middle',
+            'y': 0.5
+        }
+    )
+
+    return fig
 
 # Streamlit app setup
 st.title("Community Solar 2006-2024 in Contiguous States")
 year_slider = st.slider("Select Year", 2006, 2024, 2024)
 
-# Initialize data for the selected year
-lats_arr, lngs_arr, cap_arr, city_arr, tot_cap = [], [], [], [], 0
-for y in range(2006, year_slider + 1):
-    lats, lngs, caps, cities, total_capacity = update_plot_data(y)
-    lats_arr.extend(lats)
-    lngs_arr.extend(lngs)
-    cap_arr.extend(caps)
-    city_arr.extend(cities)
-    tot_cap += total_capacity
-
-# Redraw the plot based on the selected year
-redraw_plot(year_slider, lats_arr, lngs_arr, cap_arr, city_arr, tot_cap)
-
-# Explicitly call garbage collection to free up memory
-gc.collect()
+# Create and display the plot based on the selected year
+fig = create_plot(year_slider)
+st.plotly_chart(fig, use_container_width=True)

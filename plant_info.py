@@ -50,13 +50,11 @@ def load_plant_array(df):
     added = 0
 
     for index, row in df.iterrows():
-        name = row['Project Name']
-        utility = row['Utility']
+
         c = row['City']
         s = row['State']
         cap = row['System Size (kW-AC)']
         year = row['Year of Interconnection']
-        dataset_year = row['Year']
 
         data_obj = PlantInfo(year, s, c, cap)
 
