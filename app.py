@@ -10,9 +10,11 @@ import plant_info as pi
 
 # Set GDAL configuration options
 from pyogrio import set_gdal_config_options
+
 set_gdal_config_options({
     'SHAPE_RESTORE_SHX': 'YES',
 })
+
 
 # Load the shapefile once and cache it
 @st.cache_data
@@ -20,7 +22,9 @@ def load_shapefile():
     states = gpd.read_file('data/cb_2018_us_state_500k.shp')
     return states.to_crs("EPSG:4326")
 
+
 states = load_shapefile()
+
 
 # Filter out Hawaii and Alaska
 # states = states[~states['STUSPS'].isin(['HI', 'AK'])]
@@ -33,7 +37,9 @@ def load_data():
     ll_df = ld.load_lat_lngs()
     return pi.match_lat_lngs(plant_arr, ll_df)
 
+
 plant_arr = load_data()
+total_power_out = 0
 
 # Function to update the plot data for each year
 def update_plot_data(year):
@@ -46,7 +52,7 @@ def update_plot_data(year):
     for obj in plant_arr:
         obj_year = obj.get_year()
         state = obj.get_state()
-        if obj_year == year: # and not (state == 'AK' or state == 'HI'):
+        if obj_year == year:  # and not (state == 'AK' or state == 'HI'):
             lats_arr.append(obj.get_lat())
             lngs_arr.append(obj.get_lng())
             s = "{}, {}, {:.3f}(MW-AC)".format(obj.get_city(), state, obj.get_capacity_mw())
@@ -55,6 +61,7 @@ def update_plot_data(year):
             cap_arr.append(math.log10(obj.get_capacity_kw()))
 
     return lats_arr, lngs_arr, cap_arr, city_arr, tot_cap
+
 
 # Function to create the plot
 def create_plot(year):
@@ -85,6 +92,7 @@ def create_plot(year):
         color_continuous_scale='Viridis',
         projection='albers usa',
         title=f"Community Solar Progress {year}"
+
     )
 
     fig.update_geos(
@@ -98,7 +106,7 @@ def create_plot(year):
     )
 
     fig.update_layout(
-        margin={"r":0,"t":30,"l":0,"b":0},
+        margin={"r": 0, "t": 30, "l": 0, "b": 0},
         title_x=0.5,
         coloraxis_colorbar={
             'title': 'Log Capacity (kW-AC)',
@@ -109,12 +117,16 @@ def create_plot(year):
         }
     )
 
-    return fig
+    return fig, tot_cap, len(city_arr)
+
 
 # Streamlit app setup
 st.title("Community Solar 2006-2024 in Contiguous States")
 year_slider = st.slider("Select Year", 2006, 2024, 2024)
 
 # Create and display the plot based on the selected year
-fig = create_plot(year_slider)
+fig, total_power_out, locs = create_plot(year_slider)
 st.plotly_chart(fig, use_container_width=True)
+
+st.text("Year: {}\nNumber of Locations: {}\nTotal Power (MW-AC): {:.3f}"
+        .format(year_slider, locs, total_power_out))
